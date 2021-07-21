@@ -1,0 +1,15 @@
+目的：对于柱状图，统计其最大子矩形面积吗
+h[N]//每个柱体高度
+que[N]//模拟栈,
+int tot=0;//栈指针
+for (int j = 1; j <= m + 1; j ++)
+{
+    while (tot && h[que[tot]] > h[j])
+    {
+        int len = j - 1 - que[tot - 1];  //tot-1 会指向首个比 h[que[tot]] 小的下标
+        res = max(res, len * h[que[tot]]);
+        tot--;
+    }
+    que[++tot] = j;
+}
+cout << res;
