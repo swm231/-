@@ -67,7 +67,8 @@ viod build_failtree()
 ```
 这样，fail树就建立好了，我们可以用bfs来遍历树上的每个节点  
 差不多也就这样了，我们来写一道模板题吧  
-https://www.luogu.com.cn/problem/P5357
+<a href="https://www.luogu.com.cn/problem/P5357" target="_blank">  
+
 ```cpp
 #include<iostream>
 #include<queue>
