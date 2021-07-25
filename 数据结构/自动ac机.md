@@ -68,3 +68,85 @@ viod build_failtree()
 这样，fail树就建立好了，我们可以用bfs来遍历树上的每个节点  
 差不多也就这样了，我们来写一道模板题吧  
 https://www.luogu.com.cn/problem/P5357
+```cpp
+#include<iostream>
+#include<queue>
+using namespace std;
+const int N = 2e5 + 10;
+int tr[N][26], fail[N], n, idx = 0, pos[N];
+int sz[N], head[N], nxt[N], to[N], cnt = 0;
+queue<int> q;
+char s[N * 10];
+void insert(int x)
+{
+	int p = 0;
+	for (int i = 0; s[i] != '\0'; i++)
+	{
+		int t = s[i] - 'a';
+		if (!tr[p][t]) tr[p][t] = ++idx;
+		p = tr[p][t];
+	}
+	pos[x] = p;
+}
+void build()
+{
+	for (int i = 0; i < 26; i++)
+		if (tr[0][i])
+			q.push(tr[0][i]);
+	while (q.size())
+	{
+		int f = q.front(); q.pop();
+		for (int i = 0; i < 26; i++)
+		{
+			int p = tr[f][i];
+			if (!p) tr[f][i] = tr[fail[f]][i];
+			else
+			{
+				fail[p] = tr[fail[f]][i];
+				q.push(p);
+			}
+		}
+	}
+}
+void build_fail(int u, int v)
+{
+	nxt[++cnt] = head[u];
+	head[u] = cnt;
+	to[cnt] = v;
+}
+void bfs(int u)
+{
+	for (int i = head[u]; i; i = nxt[i])
+	{
+		int v = to[i];
+		bfs(v);
+		sz[u] += sz[v];
+	}
+}
+int main()
+{
+	scanf("%d", &n);
+	for (int i = 1; i <= n; i++)
+	{
+		scanf("%s", s);
+		insert(i);
+	}
+	build();
+	scanf("%s", s);
+	int p = 0;
+	for (int i = 0; s[i] != '\0'; i++)
+	{
+		int t = s[i] - 'a';
+		p = tr[p][t];
+		sz[p]++;
+	}
+	for (int i = 1; i <= idx; i++)
+		build_fail(fail[i], i);
+	bfs(0);
+	for (int i = 1; i <= n; i++)
+	{
+		printf("%d\n", sz[pos[i]]);
+	}
+}
+```
+ok,今天下班了，明天再说吧
