@@ -54,6 +54,7 @@ fail树其实就是把我们建立的fail指针反过来，原来应该是很多
 下面是建立fail树的过程：  
 ```cpp
 int head[N], to[N], nxt[N], cnt = 0;  //head储存的是i的一个子节点的idx值；to储存第idx个fail指针的起点，反过来之后就是终点；nxt指向第idx个fail指针指向的上一个fail指针（一直到0）
+                                      //因为我们在反向建树的时候是遍历的idx，对树上边的标记也是从1开始的，所以这个to指针就是顺序存下来的
 viod build_failtree()
 {
     for(int i = 1; i <= idx; i++)
