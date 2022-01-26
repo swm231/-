@@ -1,0 +1,33 @@
+//p中从0到n-1存储所有点，最后c即为最小圆覆盖
+int n;
+Pot p[N];
+pair<Pot,Pot> get_line(Pot a, Pot b)
+{
+    return { (a + b) / 2, rotate(b - a, pi / 2) };
+}
+Circle get_circle(Pot a, Pot b, Pot c)
+{
+    auto u = get_line(a, b), v = get_line(a, c);
+    auto p = get_line_intersection(u.first, u.second, v.first, v.second);
+    return { p, dist(p, a) };
+}
+void min_circle_cover()
+{
+    random_shuffle(p, p + n);
+    Circle c = { p[0],0 };
+    for (int i = 1; i < n; i++)
+        if (dcmp(c.r, dist(c.p, p[i])) < 0)
+        {
+            c = { p[i],0 };
+            for (int j = 0; j < i; j++)
+                if (dcmp(c.r, dist(c.p, p[j])) < 0)
+                {
+                    c = { (p[i] + p[j]) / 2,dist(p[i],p[j]) / 2 };
+                    for (int k = 0; k < j; k++)
+                        if (dcmp(c.r, dist(c.p, p[k])) < 0)
+                            c = get_circle(p[i], p[j], p[k]);
+                }
+        }
+    printf("%.3f\n", c.r);
+    printf("%.10f %.10f", c.p.x, c.p.y);
+}
